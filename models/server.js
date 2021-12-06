@@ -2,6 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 
+const { dbConnection } = require('../database/config');
+
+
 class Server {
     constructor() {
         this.app = express();
@@ -9,6 +12,17 @@ class Server {
 
 
         // Paths
+        this.userPath = '/api/users';
+
+        // DB connection
+
+        this.dbConnection();
+
+        // Middlewares
+        this.middlewares();
+
+        // routes
+        this.routes();
 
     }
 
@@ -17,11 +31,20 @@ class Server {
         this.app.use(cors());
 
         // Parse JSON
-        this.app.use( express.json());
+        this.app.use(express.json());
+
+        // Public Folder
+        this.app.use( express.static('public'));
 
     }
 
+    async dbConnection() {
+        await dbConnection();
+    }
+
     routes() {
+
+        this.app.use( this.userPath, require('../routes/user.route'));
 
     }
     
