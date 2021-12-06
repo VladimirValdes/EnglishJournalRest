@@ -4,12 +4,15 @@ const router = Router();
 
 const {
     userGet,
+    userGetById,
     userPost,
     userPut,
     userDelete
 } = require('../controllers/user.controller')
 
 router.get('/', userGet);
+
+router.get('/:id', userGetById);
 
 router.post('/', userPost);
 
