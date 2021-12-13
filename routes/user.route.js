@@ -2,7 +2,7 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { validateFields } = require('../middlewares/validateFields');
+const { validateFields, validateJWT } = require('../middlewares/index');
 
 const { 
     isRoleValido,
@@ -20,24 +20,26 @@ const {
     userDelete
 } = require('../controllers/user.controller')
 
-router.get('/', userGet);
+router.get('/', validateJWT, userGet);
 
 router.get('/:id',[
+	validateJWT,
     check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( userExitsById ),
 	validateFields
 ], userGetById);
 
 router.post('/', [
+	validateJWT,
 	check('name', 'Name is required').not().isEmpty(),
 	check('password', 'Password should be greater than').isLength({ min: 6 }),
 	check('email', 'Email is not valid').isEmail(),
 	check('email').custom( emailExist ),
-	check('role').custom( isRoleValido ),
 	validateFields
 ], userPost);
 
 router.put('/:id',[
+	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( userExitsById ),
 	check('role').custom( isRoleValido ),
@@ -45,6 +47,7 @@ router.put('/:id',[
 ], userPut);
 
 router.delete('/:id', [
+	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( userExitsById ),
 	validateFields
