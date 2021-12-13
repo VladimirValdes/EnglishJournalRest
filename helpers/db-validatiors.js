@@ -1,5 +1,11 @@
-const Role = require('../models/role');
-const User = require('../models/users');
+// const Role = require('../models/role');
+// const User = require('../models/users');
+
+const {
+    Role,
+    User,
+    Verb
+} = require('../models/index')
 
 
 const isRoleValido = async( role = '') => {
@@ -34,8 +40,18 @@ const userExitsById = async( id ) => {
 }
 
 
+const verbExists = async( baseForm = '') => {
+    const existVerb = await Verb.findOne({ baseForm });
+
+    if ( existVerb ) { 
+        console.log('verb already exist')
+        throw new Error(`Verb ${ existVerb.baseForm } has already been register in DB`)}
+}
+
+
 module.exports = {
     isRoleValido,
     emailExist,
-    userExitsById
+    userExitsById,
+    verbExists
 }
