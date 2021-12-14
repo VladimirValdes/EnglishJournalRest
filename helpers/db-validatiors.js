@@ -24,7 +24,7 @@ const emailExist = async( email = '' ) => {
 
     if ( existEmail ) {
         
-      throw new Error(`Email ${ email } has already been register in DB`);
+      throw new Error(`Email ${ existEmail.email } has already been register in DB`);
     }
 }
 
@@ -39,6 +39,7 @@ const userExitsById = async( id ) => {
     }
 }
 
+// Verbs Validations
 
 const verbExists = async( baseForm = '') => {
     const existVerb = await Verb.findOne({ baseForm });
@@ -48,10 +49,20 @@ const verbExists = async( baseForm = '') => {
         throw new Error(`Verb ${ existVerb.baseForm } has already been register in DB`)}
 }
 
+const verbExitsById = async( id ) => {
+
+    const verbExist = await Verb.findById(id);
+
+    if ( !verbExist ) {
+        throw new Error(`Id ${ verbExist._id } doesn't exist`)
+    }
+}
+
 
 module.exports = {
     isRoleValido,
     emailExist,
     userExitsById,
-    verbExists
+    verbExists,
+    verbExitsById
 }

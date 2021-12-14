@@ -5,7 +5,8 @@ const { check } = require('express-validator');
 const { validateFields, validateJWT } = require('../middlewares/index');
 
 const { 
-    verbExists
+    verbExists,
+	verbExitsById
 } = require('../helpers/db-validatiors');
 
 const router = Router();
@@ -23,6 +24,7 @@ router.get('/', validateJWT, verbGet);
 router.get('/:id',[
 	validateJWT,
     check('id', 'Id is not valid').isMongoId(),
+	check('id').custom( verbExitsById ),
 	validateFields
 ], verbGetById);
 

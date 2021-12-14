@@ -26,10 +26,14 @@ const VerbSchema = Schema({
         require: true,
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
+    },
+    status: {
+        type: Boolean,
+        default: true
+    },
 },
 {
-    timestamps: { createAt: 'create_at'}
+    timestamps: true
 }
 );
 
