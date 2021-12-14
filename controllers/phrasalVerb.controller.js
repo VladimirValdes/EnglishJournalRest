@@ -9,8 +9,8 @@ const phrasalVerbGet = async( req, res = response ) => {
 
 
     const [ total, phrasalVerbs ] = await Promise.all([
-        phrasalVerb.countDocuments(query),
-        phrasalVerb.find(query)
+        PhrasalVerb.countDocuments(query),
+        PhrasalVerb.find(query)
                .skip(Number(from))
                .limit(Number(limit))
     ]);
@@ -26,7 +26,7 @@ phrasalVerbGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
-    const phrasalVerb = await phrasalVerb.findById(id);
+    const phrasalVerb = await PhrasalVerb.findById(id);
 
     res.json({
         phrasalVerb,
