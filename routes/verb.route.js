@@ -42,12 +42,14 @@ router.post('/', [
 router.put('/:id',[
 	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
+	check('id').custom( verbExitsById ),
 	validateFields
 ], verbPut);
 
 router.delete('/:id', [
 	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
+	check('id').custom( verbExitsById ),
 	validateFields
 ], verbDelete);
 

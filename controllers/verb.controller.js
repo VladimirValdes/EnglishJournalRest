@@ -27,7 +27,7 @@ verbGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
-    const verb = await Verb.findById( id );
+    const verb = await Verb.findById(id);
 
     res.json({
         verb,
@@ -59,18 +59,22 @@ const verbPost = async( req, res = response ) => {
 const verbPut = async( req, res = response ) => {
 
     const { id } = req.params;
-    const { _id, password, email, ...rest } = req.body;
+    const { id_, baseForm, pastSimple, pastParticiple, type, nik } = req.body;
 
-    if ( password ) {
-        const salt = bcryptjs.genSaltSync();
-
-        rest.password = bcryptjs.hashSync(password, salt);
+    const data = {
+        baseForm,
+        pastSimple,
+        pastParticiple,
+        type,
+        nik,
+        user: req.user._id
     }
 
-    const user = await User.findByIdAndUpdate( id, rest, { new: true } );
+
+    const verb = await Verb.findByIdAndUpdate( id, data, { new: true } );
 
     res.json({
-        user
+        verb
     })
   
 }
@@ -80,10 +84,10 @@ const verbDelete = async( req, res = response ) => {
     const {  id } = req.params;
 
     
-    const user = await User.findByIdAndUpdate( id, { status: false }, { new: true });
+    const verb = await Verb.findByIdAndUpdate( id, { status: false }, { new: true });
 
     res.json({
-        user
+        verb
     })
 
     

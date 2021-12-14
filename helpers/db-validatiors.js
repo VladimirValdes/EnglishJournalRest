@@ -54,7 +54,7 @@ const verbExitsById = async( id ) => {
     const verbExist = await Verb.findById(id);
 
     if ( !verbExist ) {
-        throw new Error(`Id ${ verbExist._id } doesn't exist`)
+        throw new Error(`Id ${ id } doesn't exist`)
     }
 }
 
