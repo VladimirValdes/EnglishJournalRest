@@ -75,10 +75,10 @@ const phrasalVerbDelete = async( req, res = response ) => {
     const {  id } = req.params;
 
     
-    const phrasalVerb = await phrasalVerb.findByIdAndUpdate( id, { status: false }, { new: true });
+    const phrasalV = await PhrasalVerb.findByIdAndUpdate( id, { status: false }, { new: true });
 
     res.json({
-        phrasalVerb
+        phrasalV
     })
 
     
