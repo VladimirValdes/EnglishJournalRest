@@ -1,5 +1,4 @@
 const { response } = require('express');
-const bcryptjs = require('bcryptjs');
 
 const Verb = require('../models/verbs');
 

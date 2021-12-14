@@ -1,10 +1,10 @@
-// const Role = require('../models/role');
-// const User = require('../models/users');
+
 
 const {
     Role,
     User,
-    Verb
+    Verb,
+    PhrasalVerb
 } = require('../models/index')
 
 
@@ -45,7 +45,6 @@ const verbExists = async( baseForm = '') => {
     const existVerb = await Verb.findOne({ baseForm });
 
     if ( existVerb ) { 
-        console.log('verb already exist')
         throw new Error(`Verb ${ existVerb.baseForm } has already been register in DB`)}
 }
 
@@ -58,11 +57,33 @@ const verbExitsById = async( id ) => {
     }
 }
 
+// Phrasal Verb
+
+const phrasalVerbExists = async( phrasalVerb = '') => {
+    const existphrasalV = await PhrasalVerb.findOne({ phrasalVerb });
+
+    if ( existphrasalV ) { 
+        throw new Error(`Phrasal verb :  ${ existphrasalV.phrasalVerb } has already been register in DB`)}
+}
+
+const phrasalVerbExitsById = async( id ) => {
+
+    const phrasalVerbExist = await PhrasalVerb.findById(id);
+
+    if ( !phrasalVerbExist ) {
+        throw new Error(`Id ${ id } doesn't exist`)
+    }
+}
+
+
 
 module.exports = {
     isRoleValido,
     emailExist,
     userExitsById,
     verbExists,
-    verbExitsById
+    verbExitsById,
+    phrasalVerbExists,
+    phrasalVerbExitsById
+
 }

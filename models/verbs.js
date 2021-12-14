@@ -38,7 +38,7 @@ const VerbSchema = Schema({
 );
 
 VerbSchema.methods.toJSON = function() {
-    const { __v, password, ...verb } = this.toObject();
+    const { __v, ...verb } = this.toObject();
 
     return verb;
 }
