@@ -54,22 +54,18 @@ const phrasalVerbPost = async( req, res = response ) => {
 const phrasalVerbPut = async( req, res = response ) => {
 
     const { id } = req.params;
-    const { id_, baseForm, pastSimple, pastParticiple, type, nik } = req.body;
+    const { id_, phrasalVerb } = req.body;
 
     const data = {
-        baseForm,
-        pastSimple,
-        pastParticiple,
-        type,
-        nik,
+        phrasalVerb,
         user: req.user._id
     }
 
 
-    const phrasalVerb = await phrasalVerb.findByIdAndUpdate( id, data, { new: true } );
+    const phrasalV = await PhrasalVerb.findByIdAndUpdate( id, data, { new: true } );
 
     res.json({
-        phrasalVerb
+        phrasalV
     })
   
 }
