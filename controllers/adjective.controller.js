@@ -9,8 +9,8 @@ const adjectiveGet = async( req, res = response ) => {
 
 
     const [ total, adjectives ] = await Promise.all([
-        adjective.countDocuments(query),
-        adjective.find(query)
+        Adjective.countDocuments(query),
+        Adjective.find(query)
                .skip(Number(from))
                .limit(Number(limit))
     ]);
@@ -26,7 +26,7 @@ adjectiveGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
-    const adjective = await adjective.findById(id);
+    const adjective = await Adjective.findById(id);
 
     res.json({
         adjective,
