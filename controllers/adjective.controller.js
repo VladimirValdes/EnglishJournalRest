@@ -62,10 +62,10 @@ const adjectivePut = async( req, res = response ) => {
     }
 
 
-    const phrasalV = await adjective.findByIdAndUpdate( id, data, { new: true } );
+    const adj = await Adjective.findByIdAndUpdate( id, data, { new: true } );
 
     res.json({
-        phrasalV
+        adj
     })
   
 }
