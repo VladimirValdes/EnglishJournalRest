@@ -3,6 +3,8 @@ const Server    = require('./server');
 const User   = require('./users');
 const Verb = require('./verbs');
 const PhrasalVerb = require('./phrasalVerb');
+const Adjective = require('./adjectives');
+
 
 
 module.exports = {
@@ -10,5 +12,6 @@ module.exports = {
     Server,
     User,
     Verb,
-    PhrasalVerb
+    PhrasalVerb,
+    Adjective
 }

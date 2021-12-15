@@ -4,7 +4,8 @@ const {
     Role,
     User,
     Verb,
-    PhrasalVerb
+    PhrasalVerb,
+    Adjective
 } = require('../models/index')
 
 
@@ -75,6 +76,24 @@ const phrasalVerbExitsById = async( id ) => {
     }
 }
 
+// Adjective
+
+const adjectiveExists = async( adjective = '') => {
+    const existsAdj = await Adjective.findOne({ adjective });
+
+    if ( existsAdj ) { 
+        throw new Error(`Adjective :  ${ existsAdj.adjective } has already been register in DB`)}
+}
+
+const adjectiveExitsById = async( id ) => {
+
+    const adjectiveExist = await Adjective.findById(id);
+
+    if ( !adjectiveExist ) {
+        throw new Error(`Id ${ id } doesn't exist`)
+    }
+}
+
 
 
 module.exports = {
@@ -84,6 +103,8 @@ module.exports = {
     verbExists,
     verbExitsById,
     phrasalVerbExists,
-    phrasalVerbExitsById
+    phrasalVerbExitsById,
+    adjectiveExists,
+    adjectiveExitsById
 
 }
