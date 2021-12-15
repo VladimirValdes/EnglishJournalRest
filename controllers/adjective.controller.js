@@ -75,10 +75,10 @@ const adjectiveDelete = async( req, res = response ) => {
     const {  id } = req.params;
 
     
-    const phrasalV = await adjective.findByIdAndUpdate( id, { status: false }, { new: true });
+    const adj = await Adjective.findByIdAndUpdate( id, { status: false }, { new: true });
 
     res.json({
-        phrasalV
+        adj
     })
 
     
