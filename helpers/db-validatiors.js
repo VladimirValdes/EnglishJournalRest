@@ -5,7 +5,8 @@ const {
     User,
     Verb,
     PhrasalVerb,
-    Adjective
+    Adjective,
+    Preposition
 } = require('../models/index')
 
 
@@ -94,6 +95,26 @@ const adjectiveExitsById = async( id ) => {
     }
 }
 
+// Propostions
+
+
+const prepositionExists = async( preposition = '') => {
+    const existsPrep = await Preposition.findOne({ preposition });
+
+    if ( existsPrep ) { 
+        throw new Error(`preposition :  ${ existsPrep.preposition } has already been register in DB`)}
+}
+
+const prepositionExitsById = async( id ) => {
+
+    const prepositionExist = await Preposition.findById(id);
+
+    if ( !prepositionExist ) {
+        throw new Error(`Id ${ id } doesn't exist`)
+    }
+}
+
+
 
 
 module.exports = {
@@ -105,6 +126,8 @@ module.exports = {
     phrasalVerbExists,
     phrasalVerbExitsById,
     adjectiveExists,
-    adjectiveExitsById
+    adjectiveExitsById,
+    prepositionExists,
+    prepositionExitsById
 
 }

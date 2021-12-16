@@ -17,6 +17,7 @@ class Server {
         this.verbPath = '/api/verbs';
         this.phrasalVerbPath = '/api/phrasalverbs';
         this.adjectivePath = '/api/adjectives';
+        this.prepositionPath = '/api/prepositions';
 
 
         // DB connection
@@ -54,6 +55,7 @@ class Server {
         this.app.use( this.verbPath, require('../routes/verb.route'));
         this.app.use( this.phrasalVerbPath, require('../routes/phrasalVerb.router'));
         this.app.use( this.adjectivePath, require('../routes/adjective.route'));
+        this.app.use( this.prepositionPath, require('../routes/preposition.route'));
 
 
     }
