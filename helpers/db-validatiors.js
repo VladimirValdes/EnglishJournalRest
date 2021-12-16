@@ -6,7 +6,8 @@ const {
     Verb,
     PhrasalVerb,
     Adjective,
-    Preposition
+    Preposition,
+    Connector
 } = require('../models/index')
 
 
@@ -115,6 +116,25 @@ const prepositionExitsById = async( id ) => {
 }
 
 
+// Connectors
+
+
+const connectorExists = async( connector = '') => {
+    const existsConnec = await Connector.findOne({ connector });
+
+    if ( existsConnec ) { 
+        throw new Error(`connector :  ${ existsConnec.connector } has already been register in DB`)}
+}
+
+const connectorExitsById = async( id ) => {
+
+    const connectorExist = await Connector.findById(id);
+
+    if ( !connectorExist ) {
+        throw new Error(`Id ${ id } doesn't exist`)
+    }
+}
+
 
 
 module.exports = {
@@ -128,6 +148,8 @@ module.exports = {
     adjectiveExists,
     adjectiveExitsById,
     prepositionExists,
-    prepositionExitsById
+    prepositionExitsById,
+    connectorExists,
+    connectorExitsById
 
 }
