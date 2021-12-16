@@ -62,10 +62,10 @@ const prepositionPut = async( req, res = response ) => {
     }
 
 
-    const adj = await preposition.findByIdAndUpdate( id, data, { new: true } );
+    const prep = await Preposition.findByIdAndUpdate( id, data, { new: true } );
 
     res.json({
-        adj
+        prep
     })
   
 }
@@ -75,10 +75,10 @@ const prepositionDelete = async( req, res = response ) => {
     const {  id } = req.params;
 
     
-    const adj = await preposition.findByIdAndUpdate( id, { status: false }, { new: true });
+    const prep = await Preposition.findByIdAndUpdate( id, { status: false }, { new: true });
 
     res.json({
-        adj
+        prep
     })
 
     
