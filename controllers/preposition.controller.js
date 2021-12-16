@@ -9,8 +9,8 @@ const prepositionGet = async( req, res = response ) => {
 
 
     const [ total, prepositions ] = await Promise.all([
-        preposition.countDocuments(query),
-        preposition.find(query)
+        Preposition.countDocuments(query),
+        Preposition.find(query)
                .skip(Number(from))
                .limit(Number(limit))
     ]);
@@ -26,7 +26,7 @@ prepositionGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
-    const preposition = await preposition.findById(id);
+    const preposition = await Preposition.findById(id);
 
     res.json({
         preposition,
