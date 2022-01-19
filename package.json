@@ -4,8 +4,8 @@
   "description": "Api to save English content",
   "main": "app.js",
   "scripts": {
-    "start:dev": "nodemon index.js",
-    "start": "node index"    
+    "start:dev": "nodemon app.js",
+    "start": "node app"    
   },
   "author": "",
   "license": "ISC",
