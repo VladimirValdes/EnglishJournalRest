@@ -36,7 +36,7 @@ verbGetById = async( req, res = response ) => {
 verbGetByUser = async( req, res = response ) => {
     const user = req.user._id;
 
-    const verbs = await Verb.find({ user });
+    const verbs = await Verb.find({ user, status: true });
 
     res.json({
         verbs
