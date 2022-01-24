@@ -14,12 +14,15 @@ const router = Router();
 const {
     verbGet,
     verbGetById,
+	verbGetByUser,
     verbPost,
     verbPut,
     verbDelete
 } = require('../controllers/verb.controller');
 
 router.get('/', validateJWT, verbGet);
+router.get('/user', validateJWT, verbGetByUser);
+
 
 router.get('/:id',[
 	validateJWT,

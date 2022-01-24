@@ -33,6 +33,16 @@ verbGetById = async( req, res = response ) => {
     })
 }
 
+verbGetByUser = async( req, res = response ) => {
+    const user = req.user._id;
+
+    const verbs = await Verb.find({ user });
+
+    res.json({
+        verbs
+    });
+}
+
 
 const verbPost = async( req, res = response ) => {
 
@@ -95,6 +105,7 @@ const verbDelete = async( req, res = response ) => {
 module.exports = {
     verbGet,
     verbGetById,
+    verbGetByUser,
     verbPost,
     verbPut,
     verbDelete
