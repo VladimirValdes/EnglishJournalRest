@@ -1,3 +1,4 @@
+const { response, request } = require('express');
 
 
 const {
@@ -44,11 +45,14 @@ const userExitsById = async( id ) => {
 
 // Verbs Validations
 
-const verbExists = async( baseForm = '') => {
-    const existVerb = await Verb.findOne({ baseForm });
+const verbExists = async( req = request, baseForm = '') => {
+    const user = req.user._id;
+    console.log({user});
+    const existVerb = await Verb.findOne({ baseForm, user, status: true });
 
+    console.log({existVerb});
     if ( existVerb ) { 
-        throw new Error(`Verb ${ existVerb.baseForm } has already been register in DB`)}
+        throw new Error(`Verb  has already been register in DB`)}
 }
 
 const verbExitsById = async( id ) => {
