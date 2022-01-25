@@ -34,7 +34,6 @@ router.get('/:id',[
 router.post('/', [
 	validateJWT,
 	check('baseForm', 'Base form is required').not().isEmpty(),
-	check('baseForm').custom( verbExists ),
 	check('pastSimple', 'Past Simple is required').not().isEmpty(),
 	check('pastParticiple', 'Past Participle is required').not().isEmpty(),
 	check('type', 'Past Simple is required').not().isEmpty(),
