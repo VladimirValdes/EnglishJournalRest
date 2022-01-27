@@ -45,14 +45,45 @@ const userExitsById = async( id ) => {
 
 // Verbs Validations
 
-const verbExists = async( req = request, baseForm = '') => {
-    const user = req.user._id;
-    console.log({user});
-    const existVerb = await Verb.findOne({ baseForm, user, status: true });
+// const verbExists = async( req = request, baseForm = '' ) => {
+//     const user = req.user._id;
+//     const { pastSimple, pastParticiple } = req.body;
+    
+//     const existVerb = await Verb.findOne({
+//         $or: [{ baseForm }, {  pastSimple }, { pastParticiple }],
+//         $and:[{ user }, { status: true }]
 
-    console.log({existVerb});
+//     });
+
+//     if ( existVerb ) { 
+//         throw new Error(`Verb  has already been register in DB`)
+//     } 
+
+
+
+// }
+
+
+const verbExists = async( req = request, res =  response , next) => {
+    const user = req.user._id;
+    const { baseForm, pastSimple, pastParticiple } = req.body;
+    
+    const existVerb = await Verb.findOne({
+        $or: [{ baseForm }, {  pastSimple }, { pastParticiple }],
+        $and:[{ user }, { status: true }]
+
+    });
+
     if ( existVerb ) { 
-        throw new Error(`Verb  has already been register in DB`)}
+        return res.status(400).json({
+            error: 'Verb has already been register in DB'
+        })
+    } 
+
+    next();
+
+
+
 }
 
 const verbExitsById = async( id ) => {
