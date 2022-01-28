@@ -6,6 +6,7 @@ const { validateFields, validateJWT } = require('../middlewares/index');
 
 const { 
     verbExists,
+	isNotSameVerb,
 	verbExitsById
 } = require('../helpers/db-validatiors');
 
@@ -47,7 +48,7 @@ router.put('/:id',[
 	check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( verbExitsById ),
 	validateFields,
-	verbExists,
+	isNotSameVerb,
 ], verbPut);
 
 router.delete('/:id', [

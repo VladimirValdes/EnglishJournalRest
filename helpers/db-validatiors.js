@@ -86,6 +86,53 @@ const verbExists = async( req = request, res =  response , next) => {
 
 }
 
+const isNotSameVerb = async( req= request, res = response, next ) => {
+    const user = req.user._id;
+    const { id } = req.params;
+    const { baseForm, pastSimple, pastParticiple } = req.body;
+    
+
+    // You need to check by field like getVerbs 
+
+
+    // if () {
+        
+    // }
+    
+    const [ existBaseForm, existPastSimple, existPastParticiple ] = await Promise.all([
+        Verb.findOne({
+            $or: [{ baseForm }, { pastSimple: baseForm }, { pastParticiple: baseForm }],
+            $and:[{ user }, { status: true }]
+        }),
+        Verb.findOne({
+            $or: [{ baseForm: pastSimple }, { pastSimple }, { pastParticiple: pastSimple }],
+            $and:[{ user }, { status: true }]
+        }),
+        Verb.findOne({
+            $or: [{ baseForm: pastParticiple }, { pastSimple: pastParticiple }, { pastParticiple }],
+            $and:[{ user }, { status: true }]
+        }),
+    ]);
+
+
+    if ( existBaseForm && id != existBaseForm._id ) {
+        return res.status(400).json({ error: 'Verb has already been register in DB' });
+    } else if( existPastSimple && id != existPastSimple._id ){
+        return res.status(400).json({ error: 'Verb has already been register in DB' });
+    } else if (existPastParticiple && id != existPastParticiple._id ) {
+     
+        return res.status(400).json({ error: 'Verb has already been register in DB' });
+        
+    }
+    
+
+   
+
+    next();
+
+ 
+}
+
 const verbExitsById = async( id ) => {
 
     const verbExist = await Verb.findById(id);
@@ -177,6 +224,7 @@ module.exports = {
     emailExist,
     userExitsById,
     verbExists,
+    isNotSameVerb,
     verbExitsById,
     phrasalVerbExists,
     phrasalVerbExitsById,
