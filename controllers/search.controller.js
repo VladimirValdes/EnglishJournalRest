@@ -71,10 +71,35 @@ const filter = async( req, res = response ) => {
 
     switch ( collection ) {
         case 'verbs':
-            const verbs = await Verb.find().where( field, value );
+            const verbs = await Verb.find({ status: true }).where( field, value );
              return res.json({
                 results: ( verbs ) ? [ verbs ] : []
-            });    
+            });
+        case 'users':
+            const users = await User.find({ status: true }).where( field, value );
+             return res.json({
+                results: ( users ) ? [ users ] : []
+            });
+        case 'adjectives': 
+            const adjective = await Adjective.find({ status: true }).where( field, value );
+             return res.json({
+                results: ( adjective ) ? [ adjective ] : []
+            });
+        case 'phrasalverbs':
+            const phrasalVerbs = await phrasalVerb.find({ status: true }).where( field, value );
+             return res.json({
+                results: ( phrasalVerbs ) ? [ phrasalVerbs ] : []
+            });
+        case 'prepositions': 
+            const prepositions = await Preposition.find({ status: true }).where( field, value );
+             return res.json({
+                results: ( prepositions ) ? [ prepositions ] : []
+            });
+        case 'connectors': 
+            const connectors = await Connector.find({ status: true }).where( field, value );
+             return res.json({
+                results: ( connectors ) ? [ connectors ] : []
+             });
         default:
             break;
     }
@@ -160,7 +185,6 @@ const searchUsers = async( term, res = response ) => {
         results: user
     });
 }
-
 
 const searchVerbs = async( term, res = response ) => {
     
