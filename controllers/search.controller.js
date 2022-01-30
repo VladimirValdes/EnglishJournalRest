@@ -27,10 +27,7 @@ const searchAll = async( req, res = response ) => {
     const regex = new RegExp( term, "i" );
 
     const [ users, verbs, adjectives, phrasalverbs, prepositions, connectors ] = await Promise.all([
-        User.find({
-            $or: [{ name: regex }],
-            $and: [{ status: true }]
-        }),
+        User.countDocuments({ status: true }),
         Verb.find({
             $or: [{ baseForm: regex }],
             $and: [{ status: true }]
@@ -118,6 +115,26 @@ const search = ( req, res = response ) => {
 
 }
 
+
+const countRegister = async ( req, res = response ) => {
+    const [ usersTotal, verbsTotal, adjectivesTotal, phrasalverbsTotal, prepositionsTotal, connectorsTotal ] = await Promise.all([
+        User.countDocuments({ status: true }),
+        Verb.countDocuments({ status: true }),
+        Adjective.countDocuments({ status: true }),
+        PhrasalVerb.countDocuments({ status: true }),
+        Preposition.countDocuments({ status: true }),
+        Connector.countDocuments({ status: true }),
+    ]);
+
+    res.json({
+        usersTotal,
+        verbsTotal,
+        adjectivesTotal,
+        phrasalverbsTotal,
+        prepositionsTotal,
+        connectorsTotal
+    })
+}
 const searchUsers = async( term, res = response ) => {
     
     const isMongoId = ObjectId.isValid( term );
@@ -283,5 +300,6 @@ const searchConnectors = async( term, res = response ) => {
 module.exports = {
     searchAll,
     search,
-    filter
+    filter,
+    countRegister
 }
