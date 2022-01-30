@@ -92,12 +92,6 @@ const isNotSameVerb = async( req= request, res = response, next ) => {
     const { baseForm, pastSimple, pastParticiple } = req.body;
     
 
-    // You need to check by field like getVerbs 
-
-
-    // if () {
-        
-    // }
     
     const [ existBaseForm, existPastSimple, existPastParticiple ] = await Promise.all([
         Verb.findOne({

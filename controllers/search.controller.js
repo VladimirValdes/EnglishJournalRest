@@ -63,6 +63,26 @@ const searchAll = async( req, res = response ) => {
     })
 }
 
+const filter = async( req, res = response ) => {
+    const { collection, field, value } = req.params;
+
+    if ( !allowCollections.includes( collection ) ) {
+        return res.status(400).json({
+            msg: `Allow collection are ${ allowCollections }`
+        })
+    }
+
+    switch ( collection ) {
+        case 'verbs':
+            const verbs = await Verb.find().where( field, value );
+             return res.json({
+                results: ( verbs ) ? [ verbs ] : []
+            });    
+        default:
+            break;
+    }
+}
+
 const search = ( req, res = response ) => {
     
     const { collection, term } = req.params;
@@ -262,5 +282,6 @@ const searchConnectors = async( term, res = response ) => {
 
 module.exports = {
     searchAll,
-    search
+    search,
+    filter
 }
