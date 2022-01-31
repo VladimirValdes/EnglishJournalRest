@@ -73,27 +73,27 @@ const filter = async( req, res = response ) => {
         case 'verbs':
             const verbs = await Verb.find({ status: true, user }).where( field, value );
              return res.json({
-                results: ( verbs ) ? [ verbs ] : []
+                results: ( verbs ) ?  verbs  : []
             });
         case 'adjectives': 
             const adjective = await Adjective.find({ status: true, user }).where( field, value );
              return res.json({
-                results: ( adjective ) ? [ adjective ] : []
+                results: ( adjective ) ?  adjective  : []
             });
         case 'phrasalverbs':
             const phrasalVerbs = await phrasalVerb.find({ status: true, user }).where( field, value );
              return res.json({
-                results: ( phrasalVerbs ) ? [ phrasalVerbs ] : []
+                results: ( phrasalVerbs ) ?  phrasalVerbs : []
             });
         case 'prepositions': 
             const prepositions = await Preposition.find({ status: true, user }).where( field, value );
              return res.json({
-                results: ( prepositions ) ? [ prepositions ] : []
+                results: ( prepositions ) ?  prepositions  : []
             });
         case 'connectors': 
             const connectors = await Connector.find({ status: true, user }).where( field, value );
              return res.json({
-                results: ( connectors ) ? [ connectors ] : []
+                results: ( connectors ) ? connectors  : []
              });
         default:
             break;
