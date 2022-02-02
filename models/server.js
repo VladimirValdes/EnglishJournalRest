@@ -20,7 +20,8 @@ class Server {
         this.prepositionPath = '/api/prepositions';
         this.connectorPath = '/api/connectors';
         this.searchPath = '/api/search';
-        this.searchUserPath = '/api/searchuser/'
+        this.searchUserPath = '/api/searchuser/';
+        this.reportsPath = '/api/reports/';
 
 
         // DB connection
@@ -62,6 +63,7 @@ class Server {
         this.app.use( this.connectorPath, require('../routes/connector.route'));
         this.app.use( this.searchPath, require('../routes/search.route'));
         this.app.use( this.searchUserPath, require('../routes/searchUser.route'));
+        this.app.use( this.reportsPath, require('../routes/reports.route'));
 
     }
     
