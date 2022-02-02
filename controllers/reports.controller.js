@@ -1,5 +1,11 @@
+
+const path = require('path');
+const fs   = require('fs');
+const pdf = require('html-pdf');
+
+
 const { response } = require('express');
-const { ObjectId } = require('mongoose').Types;
+// const { ObjectId } = require('mongoose').Types;
 
 const { generatePdf, renderTemplate } = require('../helpers/generatePdf');
 
@@ -79,11 +85,36 @@ const verbsFilter = async( searchParams, res ) => {
 
     const html = renderTemplate('./templates/verbsTemplate.html', data );
 
-    generatePdf(html);
 
-    return res.json({
-       results: ( verbs ) ?  verbs  : []
-   });
+    pdf.create(html).toStream((err, pdfStream) => {
+        if (err) {   
+          // handle error and return a error response code
+          console.log(err)
+          return res.sendStatus(500)
+        } else {
+          // send a status code of 200 OK
+          res.statusCode = 200             
+          res.contentType("application/pdf");
+          // once we are done reading end the response
+          pdfStream.on('end', () => {
+            // done reading
+            return res.end()
+          })
+    
+          // pipe the contents of the PDF directly to the response
+          pdfStream.pipe(res)
+        }
+      })
+
+    // generatePdf(html);
+
+    // const pathPdf = path.join(__dirname, '../reports/example.pdf');
+
+    // if ( fs.existsSync( pathPdf )) {
+    //     return res.sendFile(pathPdf);
+    // } else {
+    //     console.log('No existe el archivo')
+    // }
 }
 
 
