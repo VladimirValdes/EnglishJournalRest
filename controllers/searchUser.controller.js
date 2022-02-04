@@ -100,6 +100,63 @@ const filter = async( req, res = response ) => {
     }
 }
 
+
+const filterByDate = async( req, res = response ) => {
+
+    const user = req.user._id;
+    const { startDate, endDate } = req.body;
+    
+    const [ verbs, adjectives, phrasalverbs, prepositions, connectors ] = await Promise.all([
+        Verb.find({
+                status: true,
+                user,
+                createdAt: {
+                    $gte: startDate,
+                    $lt: endDate
+                }}),
+        Adjective.find({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+            }}),
+        PhrasalVerb.find({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+            }}),
+        Preposition.find({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+            }}),
+        Connector.find({
+            status: true,
+             user,
+             createdAt: {
+                $gte: startDate,
+                $lt: endDate
+             }})
+    ]);
+
+
+    res.json({
+        verbs,
+        adjectives,
+        phrasalverbs,
+        prepositions,
+        connectors
+    })
+
+    
+}
+
+
 const search = ( req, res = response ) => {
     
     const user = req.user._id;
@@ -135,6 +192,63 @@ const search = ( req, res = response ) => {
 }
 
 
+const countRegisterByDates = async ( req, res = response ) => {
+
+    const user = req.user._id;
+    const { startDate, endDate } = req.body;
+
+
+    const [ verbsTotal, adjectivesTotal, phrasalverbsTotal, prepositionsTotal, connectorsTotal ] = await Promise.all([
+        Verb.countDocuments({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+             }
+             }),
+        Adjective.countDocuments({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+             }
+            }),
+        PhrasalVerb.countDocuments({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+             }
+             }),
+        Preposition.countDocuments({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+             }
+             }),
+        Connector.countDocuments({
+            status: true,
+            user,
+            createdAt: {
+                $gte: startDate,
+                $lt: endDate
+             }
+             }),
+    ]);
+
+    res.json({
+        verbsTotal,
+        adjectivesTotal,
+        phrasalverbsTotal,
+        prepositionsTotal,
+        connectorsTotal
+    })
+}
 const countRegister = async ( req, res = response ) => {
 
     const user = req.user._id;
@@ -296,5 +410,7 @@ module.exports = {
     searchAll,
     search,
     filter,
-    countRegister
+    filterByDate,
+    countRegister,
+    countRegisterByDates
 }

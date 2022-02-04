@@ -106,15 +106,7 @@ const verbsFilter = async( searchParams, res ) => {
         }
       })
 
-    // generatePdf(html);
-
-    // const pathPdf = path.join(__dirname, '../reports/example.pdf');
-
-    // if ( fs.existsSync( pathPdf )) {
-    //     return res.sendFile(pathPdf);
-    // } else {
-    //     console.log('No existe el archivo')
-    // }
+   
 }
 
 
