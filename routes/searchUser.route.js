@@ -11,8 +11,8 @@ route.get('/all/:term', validateJWT, searchAll);
 route.get('/:collection/:term',  validateJWT, search);
 route.get('/:collection/:field/:value', validateJWT, filter);
 route.get('/count', validateJWT, countRegister);
-route.get('/datescount', validateJWT, countRegisterByDates);
-route.get('/dates', validateJWT, filterByDate);
+route.post('/datescount', validateJWT, countRegisterByDates);
+route.post('/dates', validateJWT, filterByDate);
 
 
 
