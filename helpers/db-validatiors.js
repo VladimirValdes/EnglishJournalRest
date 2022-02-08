@@ -43,26 +43,6 @@ const userExitsById = async( id ) => {
     }
 }
 
-// Verbs Validations
-
-// const verbExists = async( req = request, baseForm = '' ) => {
-//     const user = req.user._id;
-//     const { pastSimple, pastParticiple } = req.body;
-    
-//     const existVerb = await Verb.findOne({
-//         $or: [{ baseForm }, {  pastSimple }, { pastParticiple }],
-//         $and:[{ user }, { status: true }]
-
-//     });
-
-//     if ( existVerb ) { 
-//         throw new Error(`Verb  has already been register in DB`)
-//     } 
-
-
-
-// }
-
 
 const verbExists = async( req = request, res =  response , next) => {
     const user = req.user._id;
@@ -138,12 +118,28 @@ const verbExitsById = async( id ) => {
 
 // Phrasal Verb
 
-const phrasalVerbExists = async( phrasalVerb = '') => {
-    const existphrasalV = await PhrasalVerb.findOne({ phrasalVerb });
+const phrasalVerbExists = async( req = request, res =  response , next) => {
+    const user = req.user._id;
+    const { phrasalVerb } = req.body;
+    
+    const existPhrasalVerb = await PhrasalVerb.findOne({ user, status: true, phrasalVerb });
 
-    if ( existphrasalV ) { 
-        throw new Error(`Phrasal verb :  ${ existphrasalV.phrasalVerb } has already been register in DB`)}
+    if ( existPhrasalVerb ) { 
+        return res.status(400).json({
+            error: 'Phrasal Verb has already been register in DB'
+        })
+    } 
+
+    next();
+
 }
+
+// const phrasalVerbExists = async( phrasalVerb = '') => {
+//     const existphrasalV = await PhrasalVerb.findOne({ phrasalVerb });
+
+//     if ( existphrasalV ) { 
+//         throw new Error(`Phrasal verb :  ${ existphrasalV.phrasalVerb } has already been register in DB`)}
+// }
 
 const phrasalVerbExitsById = async( id ) => {
 
@@ -156,12 +152,28 @@ const phrasalVerbExitsById = async( id ) => {
 
 // Adjective
 
-const adjectiveExists = async( adjective = '') => {
-    const existsAdj = await Adjective.findOne({ adjective });
+const adjectiveExists = async( req = request, res =  response , next) => {
+    const user = req.user._id;
+    const { adjective } = req.body;
+    
+    const existsAdj = await Adjective.findOne({ user, status: true, adjective });
 
     if ( existsAdj ) { 
-        throw new Error(`Adjective :  ${ existsAdj.adjective } has already been register in DB`)}
+        return res.status(400).json({
+            error: 'Adjective has already been register in DB'
+        })
+    } 
+
+    next();
+
 }
+
+// const adjectiveExists = async( adjective = '') => {
+//     const existsAdj = await Adjective.findOne({ adjective });
+
+//     if ( existsAdj ) { 
+//         throw new Error(`Adjective :  ${ existsAdj.adjective } has already been register in DB`)}
+// }
 
 const adjectiveExitsById = async( id ) => {
 
@@ -174,13 +186,28 @@ const adjectiveExitsById = async( id ) => {
 
 // Propostions
 
-
-const prepositionExists = async( preposition = '') => {
-    const existsPrep = await Preposition.findOne({ preposition });
+const prepositionExists = async( req = request, res =  response , next) => {
+    const user = req.user._id;
+    const { preposition } = req.body;
+    
+    const existsPrep = await Preposition.findOne({ user, status: true, preposition });
 
     if ( existsPrep ) { 
-        throw new Error(`preposition :  ${ existsPrep.preposition } has already been register in DB`)}
+        return res.status(400).json({
+            error: 'Preposition has already been register in DB'
+        })
+    } 
+
+    next();
+
 }
+
+// const prepositionExists = async( preposition = '') => {
+//     const existsPrep = await Preposition.findOne({ preposition });
+
+//     if ( existsPrep ) { 
+//         throw new Error(`preposition :  ${ existsPrep.preposition } has already been register in DB`)}
+// }
 
 const prepositionExitsById = async( id ) => {
 
@@ -194,13 +221,29 @@ const prepositionExitsById = async( id ) => {
 
 // Connectors
 
-
-const connectorExists = async( connector = '') => {
-    const existsConnec = await Connector.findOne({ connector });
+const connectorExists = async( req = request, res =  response , next) => {
+    const user = req.user._id;
+    const { connector } = req.body;
+    
+    const existsConnec = await Connector.findOne({ user, status: true, connector });
 
     if ( existsConnec ) { 
-        throw new Error(`connector :  ${ existsConnec.connector } has already been register in DB`)}
+        return res.status(400).json({
+            error: 'Connector has already been register in DB'
+        })
+    } 
+
+    next();
+
 }
+
+
+// const connectorExists = async( connector = '') => {
+//     const existsConnec = await Connector.findOne({ connector });
+
+//     if ( existsConnec ) { 
+//         throw new Error(`connector :  ${ existsConnec.connector } has already been register in DB`)}
+// }
 
 const connectorExitsById = async( id ) => {
 

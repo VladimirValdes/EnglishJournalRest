@@ -31,15 +31,17 @@ router.get('/:id',[
 router.post('/', [
 	validateJWT,
 	check('preposition', 'preposition required').not().isEmpty(),
-	check('preposition').custom( prepositionExists ),
-	validateFields
+	// check('preposition').custom( prepositionExists ),
+	validateFields,
+	prepositionExists
 ], prepositionPost);
 
 router.put('/:id',[
 	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( prepositionExitsById ),
-	validateFields
+	validateFields,
+	prepositionExists
 ], prepositionPut);
 
 router.delete('/:id', [

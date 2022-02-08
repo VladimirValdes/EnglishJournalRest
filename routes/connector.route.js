@@ -31,15 +31,17 @@ router.get('/:id',[
 router.post('/', [
 	validateJWT,
 	check('connector', 'connector required').not().isEmpty(),
-	check('connector').custom( connectorExists ),
-	validateFields
+	// check('connector').custom( connectorExists ),
+	validateFields,
+	connectorExists
 ], connectorPost);
 
 router.put('/:id',[
 	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
-	check('id').custom( connectorExitsById ),
-	validateFields
+	// check('id').custom( connectorExitsById ),
+	validateFields,
+	connectorExists
 ], connectorPut);
 
 router.delete('/:id', [

@@ -31,15 +31,17 @@ router.get('/:id',[
 router.post('/', [
 	validateJWT,
 	check('adjective', 'adjective required').not().isEmpty(),
-	check('adjective').custom( adjectiveExists ),
-	validateFields
+	// check('adjective').custom( adjectiveExists ),
+	validateFields,
+	adjectiveExists
 ], adjectivePost);
 
 router.put('/:id',[
 	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( adjectiveExitsById ),
-	validateFields
+	validateFields,
+	adjectiveExists
 ], adjectivePut);
 
 router.delete('/:id', [

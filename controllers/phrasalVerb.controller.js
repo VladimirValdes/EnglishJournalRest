@@ -34,6 +34,16 @@ phrasalVerbGetById = async( req, res = response ) => {
 }
 
 
+phrasalVerbGetByUser = async( req, res = response ) => {
+    const user = req.user._id;
+
+    const phasalverbs = await PhrasalVerb.find({ user, status: true });
+
+    res.json({
+        phasalverbs
+    });
+}
+
 const phrasalVerbPost = async( req, res = response ) => {
 
     const { phrasalVerb } = req.body;
@@ -89,5 +99,6 @@ module.exports = {
     phrasalVerbGetById,
     phrasalVerbPost,
     phrasalVerbPut,
-    phrasalVerbDelete
+    phrasalVerbDelete,
+    phrasalVerbGetByUser
 }

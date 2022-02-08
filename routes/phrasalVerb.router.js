@@ -16,10 +16,13 @@ const {
     phrasalVerbGetById,
     phrasalVerbPost,
     phrasalVerbPut,
-    phrasalVerbDelete
+    phrasalVerbDelete,
+	phrasalVerbGetByUser
 } = require('../controllers/phrasalVerb.controller');
 
 router.get('/', validateJWT, phrasalVerbGet);
+router.get('/user', validateJWT, phrasalVerbGetByUser);
+
 
 router.get('/:id',[
 	validateJWT,
@@ -31,15 +34,17 @@ router.get('/:id',[
 router.post('/', [
 	validateJWT,
 	check('phrasalVerb', 'phrasalVerbis required').not().isEmpty(),
-	check('phrasalVerb').custom( phrasalVerbExists ),
-	validateFields
+	// check('phrasalVerb').custom( phrasalVerbExists ),
+	validateFields,
+	phrasalVerbExists
 ], phrasalVerbPost);
 
 router.put('/:id',[
 	validateJWT,
 	check('id', 'Id is not valid').isMongoId(),
 	check('id').custom( phrasalVerbExitsById ),
-	validateFields
+	validateFields,
+	phrasalVerbExists
 ], phrasalVerbPut);
 
 router.delete('/:id', [
