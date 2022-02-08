@@ -37,10 +37,10 @@ phrasalVerbGetById = async( req, res = response ) => {
 phrasalVerbGetByUser = async( req, res = response ) => {
     const user = req.user._id;
 
-    const phasalverbs = await PhrasalVerb.find({ user, status: true });
+    const phrasalVerbs = await PhrasalVerb.find({ user, status: true });
 
     res.json({
-        phasalverbs
+        phrasalVerbs
     });
 }
 
@@ -53,11 +53,11 @@ const phrasalVerbPost = async( req, res = response ) => {
         user: req.user._id
     }
 
-    const phrasalV = new PhrasalVerb(data);
-    await phrasalV.save();
+    const phrasalVerbs = new PhrasalVerb(data);
+    await phrasalVerbs.save();
 
     res.json({
-        phrasalV
+        phrasalVerbs
     });
 }
 
