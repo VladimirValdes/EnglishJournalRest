@@ -16,10 +16,13 @@ const {
     prepositionGetById,
     prepositionPost,
     prepositionPut,
-    prepositionDelete
+    prepositionDelete,
+	prepostionGetByUser
 } = require('../controllers/preposition.controller');
 
 router.get('/', validateJWT, prepositionGet);
+router.get('/user', validateJWT, prepostionGetByUser);
+
 
 router.get('/:id',[
 	validateJWT,

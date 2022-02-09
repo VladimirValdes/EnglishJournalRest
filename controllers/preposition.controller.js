@@ -22,7 +22,7 @@ const prepositionGet = async( req, res = response ) => {
     });
 }
 
-prepositionGetById = async( req, res = response ) => {
+const prepositionGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
@@ -31,6 +31,16 @@ prepositionGetById = async( req, res = response ) => {
     res.json({
         preposition,
     })
+}
+
+const prepostionGetByUser = async( req, res = response ) => {
+    const user = req.user._id;
+
+    const prepositions = await Preposition.find({ user, status: true });
+
+    res.json({
+        prepositions
+    });
 }
 
 
@@ -89,5 +99,6 @@ module.exports = {
     prepositionGetById,
     prepositionPost,
     prepositionPut,
-    prepositionDelete
+    prepositionDelete,
+    prepostionGetByUser
 }
