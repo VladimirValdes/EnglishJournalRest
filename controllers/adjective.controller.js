@@ -34,6 +34,16 @@ adjectiveGetById = async( req, res = response ) => {
 }
 
 
+adjectiveGetByUser = async( req, res = response ) => {
+    const user = req.user._id;
+
+    const adjectives = await Adjective.find({ user, status: true });
+
+    res.json({
+        adjectives
+    });
+}
+
 const adjectivePost = async( req, res = response ) => {
 
     const { adjective } = req.body;
@@ -87,6 +97,7 @@ const adjectiveDelete = async( req, res = response ) => {
 module.exports = {
     adjectiveGet,
     adjectiveGetById,
+    adjectiveGetByUser,
     adjectivePost,
     adjectivePut,
     adjectiveDelete
