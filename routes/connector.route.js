@@ -16,10 +16,13 @@ const {
     connectorGetById,
     connectorPost,
     connectorPut,
-    connectorDelete
+    connectorDelete,
+	connectorsGetByUser
 } = require('../controllers/connector.controller');
 
 router.get('/', validateJWT, connectorGet);
+router.get('/user', validateJWT, connectorsGetByUser);
+
 
 router.get('/:id',[
 	validateJWT,

@@ -22,7 +22,7 @@ const connectorGet = async( req, res = response ) => {
     });
 }
 
-connectorGetById = async( req, res = response ) => {
+const connectorGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
@@ -31,6 +31,16 @@ connectorGetById = async( req, res = response ) => {
     res.json({
         connector,
     })
+}
+
+const connectorsGetByUser = async( req, res = response ) => {
+    const user = req.user._id;
+
+    const connectors = await Connector.find({ user, status: true });
+
+    res.json({
+        connectors
+    });
 }
 
 
@@ -87,6 +97,7 @@ const connectorDelete = async( req, res = response ) => {
 module.exports = {
     connectorGet,
     connectorGetById,
+    connectorsGetByUser,
     connectorPost,
     connectorPut,
     connectorDelete

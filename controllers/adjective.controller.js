@@ -22,7 +22,7 @@ const adjectiveGet = async( req, res = response ) => {
     });
 }
 
-adjectiveGetById = async( req, res = response ) => {
+const adjectiveGetById = async( req, res = response ) => {
 
     const { id } = req.params;
 
@@ -34,7 +34,7 @@ adjectiveGetById = async( req, res = response ) => {
 }
 
 
-adjectiveGetByUser = async( req, res = response ) => {
+const adjectiveGetByUser = async( req, res = response ) => {
     const user = req.user._id;
 
     const adjectives = await Adjective.find({ user, status: true });
