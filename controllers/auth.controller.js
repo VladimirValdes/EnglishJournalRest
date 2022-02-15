@@ -82,12 +82,14 @@ const refreshToken = async( req, res = response ) => {
 
      // generate Token
      const token = await generateJWT( uid );
+     const refreshToken = await generateRefreshJWT(uid);
 
      // Get User
     // const user = await User.findById(uid);
 
      res.json({
         token,
+        refreshToken
         // user,
         // menu: getMenuFrontEnd( user.rol )
         

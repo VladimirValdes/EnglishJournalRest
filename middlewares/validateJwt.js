@@ -51,8 +51,10 @@ const validateJWT = async( req = request, res = response, next ) => {
         console.log(error);
 
         if ( error instanceof jwt.TokenExpiredError) {
-            console.log('Token has expired :V');
-        }
+            return res.status(401).json({
+                msg: 'Token has expired'
+            })
+        } 
 
         res.status(401).json({
             msg: 'Token no valido'   
@@ -67,7 +69,6 @@ const validateRefreshJWT = async( req = request, res = response, next ) => {
     // get params from headers
     const { refreshToken } = req.body;
 
-    console.log('refresh token validation');
 
 
     if ( !refreshToken ) {
