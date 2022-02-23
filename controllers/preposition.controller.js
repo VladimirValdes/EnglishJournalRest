@@ -34,11 +34,20 @@ const prepositionGetById = async( req, res = response ) => {
 }
 
 const prepostionGetByUser = async( req, res = response ) => {
-    const user = req.user._id;
+    const { limit = 5, from = 0 } = req.query;
+    const user = req.user._id;   
 
-    const prepositions = await Preposition.find({ user, status: true });
+    const query = { user, status: true };
+
+    const [ total, prepositions ] = await Promise.all([
+        Preposition.countDocuments(query),
+        Preposition.find(query)
+               .skip(Number(from))
+               .limit(Number(limit))
+    ]);
 
     res.json({
+        total,
         prepositions
     });
 }

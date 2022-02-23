@@ -34,11 +34,20 @@ const connectorGetById = async( req, res = response ) => {
 }
 
 const connectorsGetByUser = async( req, res = response ) => {
-    const user = req.user._id;
+    const { limit = 5, from = 0 } = req.query;
+    const user = req.user._id;   
 
-    const connectors = await Connector.find({ user, status: true });
+    const query = { user, status: true };
+
+    const [ total, connectors ] = await Promise.all([
+        Connector.countDocuments(query),
+        Connector.find(query)
+               .skip(Number(from))
+               .limit(Number(limit))
+    ]);
 
     res.json({
+        total,
         connectors
     });
 }

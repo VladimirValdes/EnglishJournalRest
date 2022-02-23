@@ -34,11 +34,24 @@ verbGetById = async( req, res = response ) => {
 }
 
 verbGetByUser = async( req, res = response ) => {
-    const user = req.user._id;
+    const { limit = 5, from = 0 } = req.query;
+    const user = req.user._id;   
 
-    const verbs = await Verb.find({ user, status: true });
+    const query = { user, status: true };
+
+
+    const [ total, verbs ] = await Promise.all([
+        Verb.countDocuments(query),
+        Verb.find(query)
+               .skip(Number(from))
+               .limit(Number(limit))
+    ]);
+
+
+    // const verbs = await Verb.find({ user, status: true });
 
     res.json({
+        total,
         verbs
     });
 }

@@ -35,11 +35,20 @@ phrasalVerbGetById = async( req, res = response ) => {
 
 
 phrasalVerbGetByUser = async( req, res = response ) => {
-    const user = req.user._id;
+    const { limit = 5, from = 0 } = req.query;
+    const user = req.user._id;   
 
-    const phrasalVerbs = await PhrasalVerb.find({ user, status: true });
+    const query = { user, status: true };
+
+    const [ total, phrasalVerbs ] = await Promise.all([
+        PhrasalVerb.countDocuments(query),
+        PhrasalVerb.find(query)
+               .skip(Number(from))
+               .limit(Number(limit))
+    ]);
 
     res.json({
+        total,
         phrasalVerbs
     });
 }
