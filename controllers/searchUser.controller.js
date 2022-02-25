@@ -313,7 +313,17 @@ const searchVerbs = async( data, res = response ) => {
 
     const regex = new RegExp( term, 'i');
 
-    const  verbs  = await Verb.find({
+
+    const [ total, verbs ] = await Promise.all([
+        Verb.countDocuments({
+            $or: [ { baseForm: regex },
+                   { pastSimple: regex },
+                   { pastParticiple: regex },
+                   { type: regex },
+                   { nik: regex }],
+            $and: [query]
+        }),
+        Verb.find({
             $or: [ { baseForm: regex },
                    { pastSimple: regex },
                    { pastParticiple: regex },
@@ -321,11 +331,13 @@ const searchVerbs = async( data, res = response ) => {
                    { nik: regex }],
             $and: [query]
         }).skip(Number(from))
-          .limit(Number(limit));
+          .limit(Number(limit))
+    ]);
+    
 
    
     res.json({
-        total: verbs.length,
+        total,
         results: verbs
     });
 }
