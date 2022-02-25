@@ -21,6 +21,7 @@ const {
 } = require('../controllers/adjective.controller');
 
 router.get('/', validateJWT, adjectiveGet);
+
 router.get('/user', validateJWT, adjectiveGetByUser);
 
 router.get('/:id',[

@@ -59,7 +59,10 @@ const searchAll = async( req, res = response ) => {
 }
 
 const filter = async( req, res = response ) => {
+    const { limit = 5, from = 0 } = req.query;
     const user = req.user._id;
+    const query = { user, status: true };
+
 
     const { collection, field, value } = req.params;
 
@@ -71,10 +74,19 @@ const filter = async( req, res = response ) => {
 
     switch ( collection ) {
         case 'verbs':
-            const verbs = await Verb.find({ status: true, user }).where( field, value );
+
+            const [ total, verbs ] = await Promise.all([
+                Verb.countDocuments(query).where( field, value ),
+                Verb.find(query).where( field, value )
+                       .skip(Number(from))
+                       .limit(Number(limit))
+            ]);
+
              return res.json({
+                total,
                 results: ( verbs ) ?  verbs  : []
             });
+
         case 'adjectives': 
             const adjective = await Adjective.find({ status: true, user }).where( field, value );
              return res.json({
@@ -157,41 +169,6 @@ const filterByDate = async( req, res = response ) => {
 }
 
 
-const search = ( req, res = response ) => {
-    
-    const user = req.user._id;
-
-    const { collection, term } = req.params;
-
-    if ( !allowCollections.includes( collection ) ) {
-        return res.status(400).json({
-            msg: `Allow collection are ${ allowCollections }`
-        })
-    }
-
-    switch ( collection ) {
-        case 'verbs':
-            searchVerbs( term, user, res );
-            break;
-        case 'adjectives':
-            searchAdjectives( term, user, res );
-            break;
-        case 'phrasalverbs':
-            searchPhrasalVerbs( term, user, res );
-            break;
-        case 'prepositions':
-            searchPrepositions( term, user, res );
-            break;
-        case 'connectors':
-            searchConnectors( term, user, res );
-            break;        
-        default:
-            break;
-    }
-
-}
-
-
 const countRegisterByDates = async ( req, res = response ) => {
 
     const user = req.user._id;
@@ -249,6 +226,7 @@ const countRegisterByDates = async ( req, res = response ) => {
         connectorsTotal
     })
 }
+
 const countRegister = async ( req, res = response ) => {
 
     const user = req.user._id;
@@ -271,8 +249,56 @@ const countRegister = async ( req, res = response ) => {
 }
 
 
-const searchVerbs = async( term, user = '', res = response ) => {
+const search = ( req, res = response ) => {
     
+    const { limit = 5, from = 0 } = req.query;
+    const user = req.user._id;
+    const query = { user, status: true };
+
+
+    const { collection, term } = req.params;
+
+    data = {
+        term,
+        query,
+        limit,
+        from
+    }
+
+    if ( !allowCollections.includes( collection ) ) {
+        return res.status(400).json({
+            msg: `Allow collection are ${ allowCollections }`
+        })
+    }
+
+    switch ( collection ) {
+        case 'verbs':
+            // searchVerbs( term, user, query, res );
+            searchVerbs( data, res );
+            break;
+        case 'adjectives':
+            searchAdjectives( term, user, res );
+            break;
+        case 'phrasalverbs':
+            searchPhrasalVerbs( term, user, res );
+            break;
+        case 'prepositions':
+            searchPrepositions( term, user, res );
+            break;
+        case 'connectors':
+            searchConnectors( term, user, res );
+            break;        
+        default:
+            break;
+    }
+
+}
+
+
+const searchVerbs = async( data, res = response ) => {
+    
+    const { term, query, limit, from } = data;
+
     const isMongoId = ObjectId.isValid( term );
     
     if ( isMongoId ) {
@@ -287,17 +313,20 @@ const searchVerbs = async( term, user = '', res = response ) => {
 
     const regex = new RegExp( term, 'i');
 
-    const verb = await Verb.find({
-                            $or: [ { baseForm: regex },
-                                   { pastSimple: regex },
-                                   { pastParticiple: regex },
-                                   { type: regex },
-                                   { nik: regex }],
-                            $and: [{ status: true, user }]
-                        });
+    const  verbs  = await Verb.find({
+            $or: [ { baseForm: regex },
+                   { pastSimple: regex },
+                   { pastParticiple: regex },
+                   { type: regex },
+                   { nik: regex }],
+            $and: [query]
+        }).skip(Number(from))
+          .limit(Number(limit));
 
+   
     res.json({
-        results: verb
+        total: verbs.length,
+        results: verbs
     });
 }
 

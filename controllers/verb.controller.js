@@ -38,8 +38,6 @@ verbGetByUser = async( req, res = response ) => {
     const user = req.user._id;   
 
     const query = { user, status: true };
-
-
     const [ total, verbs ] = await Promise.all([
         Verb.countDocuments(query),
         Verb.find(query)
