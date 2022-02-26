@@ -277,16 +277,16 @@ const search = ( req, res = response ) => {
             searchVerbs( data, res );
             break;
         case 'adjectives':
-            searchAdjectives( term, user, res );
+            searchAdjectives( data, res );
             break;
         case 'phrasalverbs':
-            searchPhrasalVerbs( term, user, res );
+            searchPhrasalVerbs( data, res );
             break;
         case 'prepositions':
-            searchPrepositions( term, user, res );
+            searchPrepositions( data, res );
             break;
         case 'connectors':
-            searchConnectors( term, user, res );
+            searchConnectors( data, res );
             break;        
         default:
             break;
@@ -342,7 +342,9 @@ const searchVerbs = async( data, res = response ) => {
     });
 }
 
-const searchAdjectives = async( term, user = '', res = response ) => {
+const searchAdjectives = async( data, res = response ) => {
+    
+    const { term, query, limit, from } = data;
     
     const isMongoId = ObjectId.isValid( term );
     
@@ -358,17 +360,27 @@ const searchAdjectives = async( term, user = '', res = response ) => {
 
     const regex = new RegExp( term, 'i');
 
-    const adjective = await Adjective.find({
-                            $or: [{ adjective: regex } ],
-                            $and: [{ status: true, user }]
-                        });
+    const [ total, adjectives ] = await Promise.all([
+        Adjective.countDocuments({
+            $or: [{ adjective: regex }],
+            $and: [query]
+        }),
+        Adjective.find({
+            $or: [{ adjective: regex }],
+            $and: [query]
+        }).skip(Number(from))
+          .limit(Number(limit))
+    ]);
 
     res.json({
-        results: adjective
+        total,
+        results: adjectives
     });
 }
 
-const searchPhrasalVerbs = async( term, user = '', res = response ) => {
+const searchPhrasalVerbs = async( data, res = response ) => {
+
+    const { term, query, limit, from } = data;
     
     const isMongoId = ObjectId.isValid( term );
     
@@ -384,18 +396,28 @@ const searchPhrasalVerbs = async( term, user = '', res = response ) => {
 
     const regex = new RegExp( term, 'i');
 
-    const phrasalV = await PhrasalVerb.find({
-                            $or: [{ phrasalVerb: regex } ],
-                            $and: [{ status: true, user }]
-                        });
+    const [ total, phrasalverbs ] = await Promise.all([
+        PhrasalVerb.countDocuments({
+            $or: [{ phrasalVerb: regex }],
+            $and: [query]
+        }),
+        PhrasalVerb.find({
+            $or: [{ phrasalVerb: regex }],
+            $and: [query]
+        }).skip(Number(from))
+          .limit(Number(limit))
+    ]);
 
     res.json({
-        results: phrasalV
+        total,
+        results: phrasalverbs
     });
 }
 
-const searchPrepositions = async( term, user = '', res = response ) => {
+const searchPrepositions = async( data, res = response ) => {
     
+    const { term, query, limit, from } = data;
+
     const isMongoId = ObjectId.isValid( term );
     
     if ( isMongoId ) {
@@ -410,18 +432,30 @@ const searchPrepositions = async( term, user = '', res = response ) => {
 
     const regex = new RegExp( term, 'i');
 
-    const prepositions = await Preposition.find({
-                            $or: [{ preposition: regex } ],
-                            $and: [{ status: true, user }]
-                        });
+    const [ total, prepositions ] = await Promise.all([
+        Preposition.countDocuments({
+            $or: [{ preposition: regex }],
+            $and: [query]
+        }),
+        Preposition.find({
+            $or: [{ preposition: regex }],
+            $and: [query]
+        }).skip(Number(from))
+          .limit(Number(limit))
+    ]);
+
+
 
     res.json({
+        total,
         results: prepositions
     });
 }
 
-const searchConnectors = async( term, user = '', res = response ) => {
+const searchConnectors = async( data, res = response ) => {
     
+    const { term, query, limit, from } = data;
+
     const isMongoId = ObjectId.isValid( term );
     
     if ( isMongoId ) {
@@ -436,12 +470,23 @@ const searchConnectors = async( term, user = '', res = response ) => {
 
     const regex = new RegExp( term, 'i');
 
-    const connectors = await Connector.find({
-                            $or: [{ connector: regex } ],
-                            $and: [{ status: true, user }]
-                        });
+    const [ total, connectors ] = await Promise.all([
+        Connector.countDocuments({
+            $or: [{ connector: regex } ],
+            $and: [query]
+        }),
+        Connector.find({
+            $or: [{ connector: regex } ],
+            $and: [query]
+        }).skip(Number(from))
+          .limit(Number(limit))
+    ]);
+
+
+    
 
     res.json({
+        total,
         results: connectors
     });
 }
