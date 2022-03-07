@@ -36,7 +36,6 @@ router.get('/:id',[
 router.post('/', [
 	validateJWT,
 	check('adjective', 'adjective required').not().isEmpty(),
-	// check('adjective').custom( adjectiveExists ),
 	validateFields,
 	adjectiveExists
 ], adjectivePost);

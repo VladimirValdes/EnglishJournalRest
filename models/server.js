@@ -1,6 +1,7 @@
 
 const express = require('express');
 const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const { dbConnection } = require('../database/config');
 
@@ -22,6 +23,8 @@ class Server {
         this.searchPath = '/api/search';
         this.searchUserPath = '/api/searchuser/';
         this.reportsPath = '/api/reports/';
+        this.uploadsPath = '/api/uploads';
+
 
 
         // DB connection
@@ -46,6 +49,12 @@ class Server {
         // Public Folder
         this.app.use( express.static('public'));
 
+
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/'
+        }));
+
     }
 
     async dbConnection() {
@@ -64,6 +73,7 @@ class Server {
         this.app.use( this.searchPath, require('../routes/search.route'));
         this.app.use( this.searchUserPath, require('../routes/searchUser.route'));
         this.app.use( this.reportsPath, require('../routes/reports.route'));
+        this.app.use( this.uploadsPath, require('../routes/uploads.route'))
 
     }
     

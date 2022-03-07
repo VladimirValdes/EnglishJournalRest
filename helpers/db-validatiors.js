@@ -51,7 +51,6 @@ const verbExists = async( req = request, res =  response , next) => {
     const existVerb = await Verb.findOne({
         $or: [{ baseForm }, {  pastSimple }, { pastParticiple }],
         $and:[{ user }, { status: true }]
-
     });
 
     if ( existVerb ) { 
@@ -59,10 +58,7 @@ const verbExists = async( req = request, res =  response , next) => {
             error: 'Verb has already been register in DB'
         })
     } 
-
     next();
-
-
 
 }
 
@@ -70,8 +66,6 @@ const isNotSameVerb = async( req= request, res = response, next ) => {
     const user = req.user._id;
     const { id } = req.params;
     const { baseForm, pastSimple, pastParticiple } = req.body;
-    
-
     
     const [ existBaseForm, existPastSimple, existPastParticiple ] = await Promise.all([
         Verb.findOne({
@@ -98,13 +92,7 @@ const isNotSameVerb = async( req= request, res = response, next ) => {
         return res.status(400).json({ error: 'Verb has already been register in DB' });
         
     }
-    
-
-   
-
     next();
-
- 
 }
 
 const verbExitsById = async( id ) => {
@@ -134,12 +122,7 @@ const phrasalVerbExists = async( req = request, res =  response , next) => {
 
 }
 
-// const phrasalVerbExists = async( phrasalVerb = '') => {
-//     const existphrasalV = await PhrasalVerb.findOne({ phrasalVerb });
 
-//     if ( existphrasalV ) { 
-//         throw new Error(`Phrasal verb :  ${ existphrasalV.phrasalVerb } has already been register in DB`)}
-// }
 
 const phrasalVerbExitsById = async( id ) => {
 
@@ -168,12 +151,7 @@ const adjectiveExists = async( req = request, res =  response , next) => {
 
 }
 
-// const adjectiveExists = async( adjective = '') => {
-//     const existsAdj = await Adjective.findOne({ adjective });
 
-//     if ( existsAdj ) { 
-//         throw new Error(`Adjective :  ${ existsAdj.adjective } has already been register in DB`)}
-// }
 
 const adjectiveExitsById = async( id ) => {
 
@@ -202,12 +180,8 @@ const prepositionExists = async( req = request, res =  response , next) => {
 
 }
 
-// const prepositionExists = async( preposition = '') => {
-//     const existsPrep = await Preposition.findOne({ preposition });
 
-//     if ( existsPrep ) { 
-//         throw new Error(`preposition :  ${ existsPrep.preposition } has already been register in DB`)}
-// }
+
 
 const prepositionExitsById = async( id ) => {
 
@@ -238,12 +212,7 @@ const connectorExists = async( req = request, res =  response , next) => {
 }
 
 
-// const connectorExists = async( connector = '') => {
-//     const existsConnec = await Connector.findOne({ connector });
 
-//     if ( existsConnec ) { 
-//         throw new Error(`connector :  ${ existsConnec.connector } has already been register in DB`)}
-// }
 
 const connectorExitsById = async( id ) => {
 
