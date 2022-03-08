@@ -1,33 +1,72 @@
 const { response } = require('express');
 const path = require('path');
+const fs = require('fs');
+const { uploadFile } = require('../helpers/uploadFile');
+const { User } = require('../models');
 
 
-const loadFile = ( req, res = response ) => {
-
-    console.log(req.files);
 
 
-    if (!req.files || Object.keys(req.files).length === 0 || !req.files.file) {
-        res.status(400).json({ msg:'No files were uploaded.'});
-        return;
-      }
+const loadFile = async( req, res = response ) => {
 
-      const { file } = req.files;
 
+
+    try {
+        const name = await uploadFile( req.files, ['txt', 'md'] );
+
+        res.json({
+            name
+        });
+    } catch (msg) {
+        res.status(400).json({msg});
+    }
+
+}
+
+const updateImage = async( req, res = response ) => {
+
+    const { id, collection } = req.params;
+
+    let model;
+
+    switch (collection) {
+        case 'users':
+            model = await User.findById(id);
+
+            if ( !model ) {
+                return res.status(400).json({ msg: 'Id doesnt exist '});
+            }
+            
+            break;
     
-      uploadPath = path.join(__dirname, '../uploads/', file.name);
-    
-      file.mv(uploadPath, ( err ) => {
-        if (err) {
-            return res.status(500).json({err});
+        default:
+            return res.status(500).json({ msg: ' This collection doesnt exist '})
+    }
+
+
+     // Limpiar imagenes previas 
+
+    if( model.img ) {
+        // Hay que borrar la imagen del servidor
+        const pathImagen = path.join(__dirname, '../uploads', collection, model.img );
+        if ( fs.existsSync( pathImagen )) {
+            fs.unlinkSync( pathImagen ); // Nos permite borrar la imagen
         }
-        res.json({ msg:'File uploaded to '+ uploadPath});
-      });
+    }
+
+    const img = await uploadFile( req.files, undefined, collection);
+    model.img = img;
+
+    await model.save();
+
+
+    res.json(model)
     
 }
 
 
 
 module.exports = {
-    loadFile
+    loadFile,
+    updateImage
 }

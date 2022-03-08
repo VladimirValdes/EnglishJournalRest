@@ -223,6 +223,14 @@ const connectorExitsById = async( id ) => {
     }
 }
 
+const allowCollection = async( collection = "", collections = []) => {
+    
+    const colec = collections.includes(collection);
+    if ( !colec ) {
+        throw new Error(`Collection ${ collection } is not allow , ${ collections }`);
+    }
+}
+
 
 
 module.exports = {
@@ -239,6 +247,7 @@ module.exports = {
     prepositionExists,
     prepositionExitsById,
     connectorExists,
-    connectorExitsById
+    connectorExitsById,
+    allowCollection
 
 }

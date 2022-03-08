@@ -23,6 +23,9 @@ const UserSchema = Schema({
         default: 'GUEST_ROLE',
         emun: ['ADMIN_ROLE', 'USER_ROLE', 'GUEST_ROLE']
     },
+    img: {
+        type: String,
+    },
     status: {
         type: Boolean,
         default: true
