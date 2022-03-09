@@ -7,7 +7,7 @@ const {
 } = require('../helpers/db-validatiors');
 
 const { validateFields, validateJWT, validateFileUpload } = require('../middlewares/index');
-const { loadFile, updateImage } = require('../controllers/uploads.controller');
+const { loadFile, updateImage, showImage, updateImageCloudinary } = require('../controllers/uploads.controller');
 
 const router = Router();
 
@@ -24,6 +24,13 @@ router.put('/:collection/:id',[
     check('id', 'Id is not valid').isMongoId(),
 	check('collection').custom( c => allowCollection( c, ['users'])),
 	validateFields,
-], updateImage)
+], updateImageCloudinary);
+
+router.get('/:collection/:id',[
+	validateJWT,
+    check('id', 'Id is not valid').isMongoId(),
+	check('collection').custom( c => allowCollection( c, ['users'])),
+	validateFields,
+], showImage);
 
 module.exports = router;
