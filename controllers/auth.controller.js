@@ -39,11 +39,11 @@ const login = async( req, res = response ) => {
 
         // Check  verified account
 
-        if( !user.verified ) {
-            return res.status(400).json({
-                msg: 'User - verified: false'
-            })
-        }
+        // if( !user.verified ) {
+        //     return res.status(400).json({
+        //         msg: 'User - verified: false'
+        //     })
+        // }
 
         // Generar  el JWT
         const token = await generateJWT( user.id );
