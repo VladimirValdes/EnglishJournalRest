@@ -12,6 +12,15 @@ const {
 } = require('../models/index')
 
 
+const urlTokenExist = async( token = '') => {
+
+    const tokenExist = await User.findOne({ token })
+
+    if ( !tokenExist ) {
+        throw new Error(`This token doesn't exists`);
+    }
+}
+
 const isRoleValido = async( role = '') => {
 
     const existRol = await Role.findOne({ role });
@@ -248,6 +257,7 @@ module.exports = {
     prepositionExitsById,
     connectorExists,
     connectorExitsById,
-    allowCollection
+    allowCollection,
+    urlTokenExist
 
 }

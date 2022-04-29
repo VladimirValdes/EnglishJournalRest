@@ -30,7 +30,6 @@ router.get('/:id',[
 ], userGetById);
 
 router.post('/', [
-	validateJWT,
 	check('name', 'Name is required').not().isEmpty(),
 	check('password', 'Password should be greater than').isLength({ min: 6 }),
 	check('email', 'Email is not valid').isEmail(),

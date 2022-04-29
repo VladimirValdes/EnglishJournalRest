@@ -2,7 +2,9 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
 
-const { login, renewToken, refreshToken } = require('../controllers/auth.controller');
+
+const { urlTokenExist } = require('../helpers/db-validatiors');
+const { login, renewToken, refreshToken, verified, forgotPassword, verifiedToken, newPassword } = require('../controllers/auth.controller');
 const { validateFields, validateJWT, validateRefreshJWT } = require('../middlewares/index');
 
 const router = Router();
@@ -13,15 +15,27 @@ router.post('/login',[
     validateFields
 ], login);
 
+router.get('/verified/:token',[
+    check('token', 'token is requires').not().isEmpty(),
+    check('token').custom(urlTokenExist),
+    validateFields
+], verified);
+
 router.get('/renew', [
     validateJWT,
     validateFields
-], renewToken )
+], renewToken );
 
 router.post('/refreshtoken', [
-    validateRefreshJWT,
     validateFields
-], refreshToken)
+], refreshToken);
+
+router.post('/forgotpassword', forgotPassword);
+router.route('/forgotpassword/:token').get(verifiedToken).post(newPassword);
+// router.get('/forgotpassword/:token', verifiedToken);
+// router.post('/forgotpassword/:token', newPassword);
+
+
 
 
 

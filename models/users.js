@@ -1,5 +1,6 @@
 
 const { Schema, model } = require('mongoose');
+const generateId = require('../helpers/generateId');
 
 const UserSchema = Schema({
     name: {
@@ -30,6 +31,14 @@ const UserSchema = Schema({
         type: Boolean,
         default: true
     },
+    token: {
+        type: String,
+        default: generateId()
+    },
+    verified: {
+        type: Boolean,
+        default: false
+    }
 });
 
 UserSchema.methods.toJSON = function() {

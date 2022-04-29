@@ -2,6 +2,7 @@ const { response } = require('express');
 const bcryptjs = require('bcryptjs');
 
 const User = require('../models/users');
+const registerEmail = require('../helpers/registerEmail');
 
 
 const userGet = async( req, res = response ) => {
@@ -47,7 +48,11 @@ const userPost = async( req, res = response ) => {
 
     // saved in DB
 
-    await user.save();
+    const userSave = await user.save();
+
+    // enviar email
+
+    registerEmail({ email, name, token: userSave.token });
 
 
     res.json({
